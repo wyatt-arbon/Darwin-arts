@@ -21,13 +21,14 @@ session_start();
 			 $itemCount = count($_SESSION['cart']);
 			 $tempArray = array('productId' => $_POST["productId"] );
 			 $_SESSION['cart'][$itemCount] = $tempArray;
+			 $_SESSION['Quantity'][$_POST["productId"]] = 1;
 
 
 		 }
 	 }else{
-		 //$tempArray = array('product_id' => $_POST["product_id"]);
 		 $tempArray = array('productId' => $_POST["productId"] );
 		 $_SESSION['cart'][0] = $tempArray;
+		 $_SESSION['Quantity'][$_POST["productId"]] = 1;
 	 }
  }
 ?>
@@ -43,17 +44,18 @@ session_start();
 				<?php
 				if(isset($_SESSION['cart'])){
 					$itemCount = count($_SESSION['cart']);
-					echo"<span>$itemCount</span>";
+					echo"<span>($itemCount)</span>";
 				}else{
-					echo"0";
+					echo"(0)";
 				};?>
 			</a>
 		</h3>
 	</head>
 	<body>
 		<?php
-			while ($i = mysqli_fetch_assoc($arts)):
-		 ?>
+			while ($i = mysqli_fetch_assoc($arts) ):
+				if ($i['OnShow'] != 0) {
+		?>
 		 <div>
 			 <h4>
 			 	<?= $i['ProductName'];?>
@@ -70,6 +72,8 @@ session_start();
 
 
 		 </div>
-	 <?php endwhile; ?>
+	 	<?php
+	}
+			endwhile; ?>
 	</body>
 </html>

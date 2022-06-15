@@ -9,9 +9,7 @@ CREATE TABLE customer(
   CustEmail varchar(255) NOT NULL,
   CustFName CHAR(50) NOT NULL,
   CustLName CHAR(50) NOT NULL,
-  Title varchar(50) NOT NULL,
   Address varchar(255) NOT NULL,
-  City varchar(255) NOT NULL,
   State varchar(255) NOT NULL,
   Country varchar(255) NOT NULL,
   PostCode varchar(50) NOT NULL,
@@ -26,8 +24,8 @@ CREATE TABLE product(
   price INT(10) NOT NULL,
   Category varchar(255) NOT NULL,
   Size varchar(50) NOT NULL,
-  Colour varchar(50) NOT NULL,
   picture varchar(255),
+  OnShow INT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (ProductNo)
 )ENGINE=InnoDB, DEFAULT CHARACTER SET utf8;
 
@@ -41,7 +39,7 @@ CREATE TABLE purchase(
 
 CREATE TABLE purchaseItem(
   ItemNo INT(11) NOT NULL AUTO_INCREMENT,
-  Quantity date NOT NULL,
+  Quantity INT(3) NOT NULL,
   PurchaseNo INT(11) NOT NULL,
   ProductNo INT(11) NOT NULL,
   PRIMARY KEY (ItemNo),
