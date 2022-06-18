@@ -23,12 +23,36 @@ session_start();
        $productId = array_column($_SESSION['cart'], "productId");
        while ($a = mysqli_fetch_assoc($arts)) {
          foreach ($productId as $key) {
-             $totalPrice += $a['price'];
+           if ($a['ProductNo'] == $key) {
+             $totalPrice += $a['price'] * $_SESSION['Quantity'][$a['ProductNo']];
              checkout($a['picture'], $a['ProductName'], $a['price'], $_SESSION['Quantity'][$a['ProductNo']]);
+           }
          }
        }
      }else{
        echo "<h3>Cart Empty</h3>";
+     }
+     if(isset($_POST['Save'])){
+         $cleanval = filter_var($_POST['Cust1'], FILTER_VALIDATE_EMAIL);
+         $_SESSION['CustDetail'][1] = $cleanval;
+         print_r($_POST['Cust1'], $_SESSION['CustDetail'][1]);
+         $cleanval = filter_var($_POST['Cust2']);
+         $_SESSION['CustDetail'][2] = $cleanval;
+         $cleanval = filter_var($_POST['Cust3']);
+         $_SESSION['CustDetail'][3] = $cleanval;
+         $cleanval = filter_var($_POST['Cust4']);
+         $_SESSION['CustDetail'][4] = $cleanval;
+         $cleanval = filter_var($_POST['Cust5']);
+         $_SESSION['CustDetail'][5] = $cleanval;
+         $cleanval = filter_var($_POST['Cust6']);
+         $_SESSION['CustDetail'][6] = $cleanval;
+         $cleanval = filter_var($_POST['Cust7']);
+         $_SESSION['CustDetail'][7] = $cleanval;
+         $cleanval = filter_var($_POST['Cust8']);
+         $_SESSION['CustDetail'][8] = $cleanval;
+     }
+     if ($_SESSION['CustDetail'][1] == 0) {
+       print_r('test');
      }
      ?>
      <div class="Price container">
@@ -41,18 +65,32 @@ session_start();
        }?> items): $<?= $totalPrice; ?></p>
        <hr>
        <h3>Delivery details</h3>
-       <div class="CustDetails">
-         Email
-         <input type="text" name="" value="">
-         First Name
-         Last Name
-         Phone Number
-         Country
-         Address
-         State
-         PostCode
-
-       </div>
-
+       <form class="customerDetails" action="checkout.php" method="post">
+         <div class="CustDetails">
+           <h4>Email</h4>
+           <input type="text" name="Cust1" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][1];}?>" required="required">
+           <h4>First Name</h4>
+           <input type="text" name="Cust2" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][2];}?>" required="required">
+           <h4>Last Name</h4>
+           <input type="text" name="Cust3" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][3];}?>" required="required">
+           <h4>Phone Number</h4>
+           <input type="text" name="Cust4" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][4];}?>" required="required">
+           <h4>Country</h4>
+           <input type="text" name="Cust5" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][5];}?>" required="required">
+           <h4>Address</h4>
+           <input type="text" name="Cust6" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][6];}?>" required="required">
+           <h4>State</h4>
+           <input type="text" name="Cust7" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][7];}?>" required="required">
+           <h4>PostCode</h4>
+           <input type="text" name="Cust8" value="<?php if(isset($_SESSION['CustDetail'])){echo $_SESSION['CustDetail'][8];}?>" required="required">
+           <button type="submit" name="Save">Save</button>
+         </div>
+       </form>
+       <hr>
+       <form class="submitorder" action="submit.php" method="post">
+         <button type="submit" name="OrderSubmit"<?php if(!isset($_SESSION['CustDetail'])){echo "disabled";}else {
+           foreach($_SESSION['CustDetail'] as $key => $value) {if ($value == 0) {echo "disabled";}}
+         } ?>>Submit Order</button>
+       </form>
    </body>
  </html>

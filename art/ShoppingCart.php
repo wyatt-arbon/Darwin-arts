@@ -6,8 +6,7 @@ $Db = mysqli_connect('localhost','root');
 mysqli_select_db($Db, 'art_webapp_prototype');
 $products = "SELECT * FROM product";
 $arts = $Db->query($products);
-
- ?>
+?>
 
 
 <!DOCTYPE html>
@@ -71,7 +70,7 @@ $arts = $Db->query($products);
                 }else {
                   echo "0";
                 }?> items): $<?= $totalPrice; ?></p>
-                <button type="submit" name="Checkout">Checkout</button>
+                <button type="submit" name="Checkout" <?php if(!isset($_SESSION['cart'])){echo "disabled";}elseif(isset($_SESSION['cart']) && !count($_SESSION['cart'])>0){echo "disabled";} ?>>Checkout</button>
               </div>
             </form>
           </div>

@@ -1,6 +1,4 @@
-
 <?php
-
 function cartTable($ProImg, $ProName, $ProPrice, $ProId, $ProQuantity){
   $element="
   <form class=\"cartItems\" action=\"ShoppingCart.php?&id=$ProId\" method=\"post\">
