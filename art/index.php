@@ -36,9 +36,11 @@ session_start();
 <html lang="en" dir="ltr">
 	<head>
 		<meta charset="utf-8">
-		<title>Dawin Art Studio</title>
-		<h1>Dawin Art Studio</h1>
-		<h3>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+		<title>Darwin Art Studio</title>
+		<h1>Darwin Art Studio</h1>
+		<h2>
 			<a href="ShoppingCart.php">
 				Cart
 				<?php
@@ -49,31 +51,31 @@ session_start();
 					echo"(0)";
 				};?>
 			</a>
-		</h3>
+		</h2>
 	</head>
 	<body>
+		<div class="productCardsContainer">
 		<?php
 			while ($i = mysqli_fetch_assoc($arts) ):
 				if ($i['OnShow'] != 0) {
 		?>
-		 <div>
-			 <h4>
-			 	<?= $i['ProductName'];?>
-			 </h4>
-			 <img src="<?= $i['picture'];?> " width="400"/>
-			 <p class="dis"> <?= $i['Description'];?></p>
-			 <p class="price">$<?= $i['price'];?></p>
-			 <form action="index.php" method="post">
-
-
-			 	<button type="submit" name="add">Add to Cart </button>
-				<input type="hidden" name="productId" value="<?= $i['ProductNo'];?>">
-			</form>
-
-
-		 </div>
+			 <div class="card">
+					<h3>
+					 	<?= $i['ProductName'];?>
+					</h3>
+					<div class="imgContainer">
+						<img src="<?= $i['picture'];?>"/>
+					</div>
+					<p class="dis"> <?= $i['Description'];?></p>
+					<p class="price">$<?= $i['price'];?></p>
+					<form action="index.php" method="post">
+						<button type="submit" name="add">Add to Cart </button>
+		 				<input type="hidden" name="productId" value="<?= $i['ProductNo'];?>">
+	 				</form>
+			 </div>
 	 	<?php
 	}
 			endwhile; ?>
+		</div>
 	</body>
 </html>
