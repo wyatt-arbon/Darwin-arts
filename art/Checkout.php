@@ -10,11 +10,13 @@ session_start();
  <html lang="en" dir="ltr">
    <head>
      <meta charset="utf-8">
-     <title>Dawin Art Studio</title>
- 		 <h1>Dawin Art Studio</h1>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="style.css">
+     <title>Darwin Art Studio</title>
+ 		 <h1>Darwin Art Studio</h1>
    </head>
    <body>
-     <h3><a href="ShoppingCart.php">&lt; Back</a></h3>
+     <h2><a href="ShoppingCart.php">&lt; Back</a></h2>
      <hr>
      <hr>
      <?php
@@ -30,7 +32,7 @@ session_start();
          }
        }
      }else{
-       echo "<h3>Cart Empty</h3>";
+       echo "<h2>Cart Empty</h2>";
      }
      if(isset($_POST['Save'])){
          $cleanval = filter_var($_POST['Cust1'], FILTER_VALIDATE_EMAIL);
@@ -56,7 +58,7 @@ session_start();
      }
      ?>
      <div class="Price container">
-       <h4>Order summary</h4>
+       <h3>Order summary</h3>
        <p>Subtotal (<?php
        if(isset($_SESSION['cart']) && count($_SESSION['cart'])>0){
          echo count($_SESSION['cart']);
@@ -64,7 +66,7 @@ session_start();
          echo "0";
        }?> items): $<?= $totalPrice; ?></p>
        <hr>
-       <h3>Delivery details</h3>
+       <h2>Delivery details</h2>
        <form class="customerDetails" action="checkout.php" method="post">
          <div class="CustDetails">
            <h4>Email</h4>

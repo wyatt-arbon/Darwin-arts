@@ -11,6 +11,38 @@ h2{
 h3{
   font-size: 1.6em;
 }
+/*container that holds the product listing cards*/
+.productCardsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+/*a card for every product*/
+.card{
+  float: left;
+  width: 50%;
+  display: block;
+  padding: 2%;
+}
+/*container that stores the image within the product cards*/
+.imgContainer{
+  width:100%;
+  height:70%;
+  text-align: center;
+  display:block;
+}
+/*image settings*/
+img{
+  width:70%;
+  height: auto;
+}
+
+/*when the screen reaches a certain size (larger-screened computers) it will
+change to these settings*/
+@media screen and (min-width:770px){
 .productCardsContainer{
   display: flex;
   flex-wrap: wrap;
