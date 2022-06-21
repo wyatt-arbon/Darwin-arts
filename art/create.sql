@@ -31,7 +31,7 @@ CREATE TABLE product(
 
 CREATE TABLE purchase(
   PurchaseNo INT(11) NOT NULL AUTO_INCREMENT,
-  PurchaseDate date NOT NULL,
+  PurchaseDate DATETIME NOT NULL DEFAULT NOW(),
   CustEmail varchar(255) NOT NULL,
   PRIMARY KEY (PurchaseNo),
   FOREIGN KEY (CustEmail) REFERENCES customer(CustEmail)
