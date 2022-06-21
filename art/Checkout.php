@@ -37,7 +37,6 @@ session_start();
      if(isset($_POST['Save'])){
          $cleanval = filter_var($_POST['Cust1'], FILTER_VALIDATE_EMAIL);
          $_SESSION['CustDetail'][1] = $cleanval;
-         print_r($_POST['Cust1'], $_SESSION['CustDetail'][1]);
          $cleanval = filter_var($_POST['Cust2']);
          $_SESSION['CustDetail'][2] = $cleanval;
          $cleanval = filter_var($_POST['Cust3']);
@@ -52,9 +51,6 @@ session_start();
          $_SESSION['CustDetail'][7] = $cleanval;
          $cleanval = filter_var($_POST['Cust8']);
          $_SESSION['CustDetail'][8] = $cleanval;
-     }
-     if ($_SESSION['CustDetail'][1] == 0) {
-       print_r('test');
      }
      ?>
      <div class="Price container">
