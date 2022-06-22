@@ -1,7 +1,8 @@
 <?php
+//start session storage
 session_start();
 require_once('Functions.php');
-//require_once('index.php');
+//connection to the database is established
 $Db = mysqli_connect('localhost','root');
 mysqli_select_db($Db, 'art_webapp_prototype');
 $products = "SELECT * FROM product";
@@ -26,52 +27,60 @@ $arts = $Db->query($products);
         <h3>Cart</h3>
         <hr>
         <?php
+        //total price is set to zero
         $totalPrice = 0;
+        //check if remove from cart is called
         if(isset($_POST['remove'])){
-          //if($_GET['action']=='remove'){
           $cleanId = filter_var($_GET['id']);
+          //varify product id of item to be removed is in cart
           foreach ($_SESSION['cart'] as $key => $value) {
             if ($value['productId']== $cleanId) {
-              //print_r($key);
-              //print_r($_SESSION['Quantity'][$value['productId']]);
+              //unset item from cart and unset attached quantity
               unset($_SESSION['Quantity'][$cleanId]);
               unset($_SESSION['cart'][$key]);
             }
           }
-                //}
         }
+        //check if cart quantity it to be updated
         if(isset($_POST['update'])){
-          //if($_GET['action']=='remove'){
-          //print_r($_GET['id']);
+          //all values are cleaned and cart is updated
           $cleanQuantity = filter_var($_POST['itemQuantity']);
           $cleanId = filter_var($_GET['id']);
           $_SESSION['Quantity'][$cleanId] = $cleanQuantity;
         }
+        //checks if cart is set and items have been added
         if(isset($_SESSION['cart']) && count($_SESSION['cart'])>0){
+          //display all items in cart
           $productId = array_column($_SESSION['cart'], "productId");
           while ($a = mysqli_fetch_assoc($arts)) {
             foreach ($productId as $key) {
               if ($a['ProductNo'] == $key) {
+                //add to total price
                 $totalPrice += $a['price'] * $_SESSION['Quantity'][$a['ProductNo']];
+                //call function with relevant data passed through to display item
                 cartTable($a['picture'], $a['ProductName'], $a['price'], $a['ProductNo'], $_SESSION['Quantity'][$a['ProductNo']]);
                 }
               }
             }
           }else{
+            //if cart is empty display the following
             echo "<h2>Cart Empty</h2>";
           }
           ?>
           <hr>
           </div>
+          <!--form alls the checkout.php page if butten is pressed -->
             <form class="Checkout" action="Checkout.php" method="post">
               <div class="Price container">
                 <h3>Order summary</h3>
                 <p>Subtotal (<?php
+                //display number of unique items in cart as well at total price
                 if(isset($_SESSION['cart']) && count($_SESSION['cart'])>0){
                   echo count($_SESSION['cart']);
                 }else {
                   echo "0";
                 }?> items): $<?= $totalPrice; ?></p>
+                <!-- butten is disabled if cart is empty -->
                 <button type="submit" name="Checkout" <?php if(!isset($_SESSION['cart'])){echo "disabled";}elseif(isset($_SESSION['cart']) && !count($_SESSION['cart'])>0){echo "disabled";} ?>>Checkout</button>
               </div>
             </form>

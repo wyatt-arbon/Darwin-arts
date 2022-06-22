@@ -1,4 +1,5 @@
 <?php
+//connect to database, link functions and start sessions
 $Db = mysqli_connect('localhost','root');
 mysqli_select_db($Db, 'art_webapp_prototype');
 $products = "SELECT * FROM product";
@@ -20,13 +21,17 @@ session_start();
      <hr>
      <hr>
      <?php
+     //set total to 0
      $totalPrice = 0;
+     //check if cart exists
      if(isset($_SESSION['cart']) && count($_SESSION['cart'])>0){
        $productId = array_column($_SESSION['cart'], "productId");
        while ($a = mysqli_fetch_assoc($arts)) {
          foreach ($productId as $key) {
            if ($a['ProductNo'] == $key) {
+             //add to total price
              $totalPrice += $a['price'] * $_SESSION['Quantity'][$a['ProductNo']];
+             //pass data through to checkout function
              checkout($a['picture'], $a['ProductName'], $a['price'], $_SESSION['Quantity'][$a['ProductNo']]);
            }
          }
@@ -34,28 +39,30 @@ session_start();
      }else{
        echo "<h2>Cart Empty</h2>";
      }
+     //filter and save customer details to session
      if(isset($_POST['Save'])){
          $cleanval = filter_var($_POST['Cust1'], FILTER_VALIDATE_EMAIL);
          $_SESSION['CustDetail'][1] = $cleanval;
-         $cleanval = filter_var($_POST['Cust2']);
+         $cleanval = filter_var($_POST['Cust2'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][2] = $cleanval;
-         $cleanval = filter_var($_POST['Cust3']);
+         $cleanval = filter_var($_POST['Cust3'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][3] = $cleanval;
-         $cleanval = filter_var($_POST['Cust4']);
+         $cleanval = filter_var($_POST['Cust4'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][4] = $cleanval;
-         $cleanval = filter_var($_POST['Cust5']);
+         $cleanval = filter_var($_POST['Cust5'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][5] = $cleanval;
-         $cleanval = filter_var($_POST['Cust6']);
+         $cleanval = filter_var($_POST['Cust6'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][6] = $cleanval;
-         $cleanval = filter_var($_POST['Cust7']);
+         $cleanval = filter_var($_POST['Cust7'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][7] = $cleanval;
-         $cleanval = filter_var($_POST['Cust8']);
+         $cleanval = filter_var($_POST['Cust8'], FILTER_SANITIZE_STRING);
          $_SESSION['CustDetail'][8] = $cleanval;
      }
      ?>
      <div class="Price container">
        <h3>Order summary</h3>
        <p>Subtotal (<?php
+       //number of unique items in cart as well at total price
        if(isset($_SESSION['cart']) && count($_SESSION['cart'])>0){
          echo count($_SESSION['cart']);
        }else {
@@ -63,6 +70,7 @@ session_start();
        }?> items): $<?= $totalPrice; ?></p>
        <hr>
        <h2>Delivery details</h2>
+       <!-- form to get customer details with a submit button at the bottem to save changes -->
        <form class="customerDetails" action="checkout.php" method="post">
          <div class="CustDetails">
            <h4>Email</h4>
@@ -85,6 +93,7 @@ session_start();
          </div>
        </form>
        <hr>
+       <!-- submit order button only enabled when items in cart and customer details are valid. -->
        <form class="submitorder" action="submit.php" method="post">
          <button type="submit" name="OrderSubmit"<?php if(!isset($_SESSION['CustDetail'])){echo "disabled";}else {
            foreach($_SESSION['CustDetail'] as $key => $value) {if ($value == 0) {echo "disabled";}}
